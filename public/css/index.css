@@ -1,0 +1,19 @@
+canvas {
+  padding: 0;
+  display: block;
+
+  border: 5px solid black;
+}
+
+body {
+  margin: 0;
+}
+
+.colors {
+  display: flex;
+}
+
+.color {
+  width: 100px;
+  height: 30px;
+}

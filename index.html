@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="#" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/css/index.css" text="text/css" rel="stylesheet" />
+    <title>Level Maker</title>
+  </head>
+
+  <body>
+    <canvas id="canvas" oncontextmenu="return false"></canvas>
+
+    <div class="rightBar">
+      <button id="c0" class="color c0" value="0">0</button>
+      <button id="c1" class="color c1" value="1">1</button>
+      <button id="c2" class="color c2" value="2">2</button>
+      <button id="c3" class="color c3" value="3">3</button>
+      <button id="c4" class="color c4" value="4">4</button>
+      <button id="c5" class="color c5" value="5">5</button>
+      <button id="c6" class="color c6" value="6">6</button>
+      <button id="c7" class="color c7" value="7">7</button>
+      <button id="c8" class="color c8" value="8">8</button>
+      <button id="c9" class="color c9" value="9">9</button>
+      <br />
+
+      <label for="width">Width Blocks</label>
+      <input type="number" id="width" value="16" />
+
+      <label for="height">Height Blocks</label>
+      <input type="number" id="height" value="16" />
+
+      <label for="size">Block Size</label>
+      <input type="number" id="size" value="10" />
+
+      <input type="button" id="grid" value="grid" />
+
+      <input type="button" id="clear" value="clear" />
+      <input type="button" id="download" value="download" />
+
+      <input type="button" id="print" value="print" />
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
