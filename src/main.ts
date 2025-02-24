@@ -177,6 +177,41 @@ document.getElementById("download")!.onclick = function () {
   saveLevel("output.txt", level.level);
 };
 
+const fileInput = document.getElementById("file");
+fileInput!.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      let content = event.target.result;
+      content = content.substring(0, content.length - 1);
+
+      const splitRows = content.split("\n");
+      for (let i = 0; i < splitRows.length; i++) {
+        const curr = splitRows[i];
+        splitRows[i] = curr.substring(1, curr.length - 2).split(",");
+        for (let j = 0; j < splitRows[i].length; j++) {
+          splitRows[i][j] = +splitRows[i][j];
+        }
+      }
+
+      console.log(splitRows);
+      level.height = splitRows.length;
+      level.width = splitRows[0].length;
+      widthBlockEle.value = "" + level.width;
+      heightBlockEle.value = "" + level.height;
+
+      canvas.width = level.width * level.blockSize;
+      canvas.height = level.height * level.blockSize;
+
+      level.level = splitRows;
+    };
+
+    reader.readAsText(file);
+  }
+});
+
 window.addEventListener("mousemove", function (event) {
   const rect = canvas.getBoundingClientRect();
 
@@ -232,7 +267,7 @@ function saveLevel(filePath: string, level: number[][]) {
   for (let i = 0; i < level.length; i++) {
     text += "[";
     text += level[i].toString();
-    text += "]\n";
+    text += "],\n";
   }
 
   element.setAttribute(
