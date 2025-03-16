@@ -1,5 +1,7 @@
 const canvas = document.querySelector("canvas")!;
 const ctx = canvas.getContext("2d")!;
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
 
 const mouse = {
   x: 0,
@@ -13,7 +15,8 @@ class Level {
   width: number;
   height: number;
   blockSize: number;
-  grid = false;
+  grid = true;
+  numbers = true;
   level: number[][];
 
   constructor(width: number, height: number, blockSize: number) {
@@ -46,14 +49,14 @@ class Level {
   drawGrid() {
     if (this.grid) {
       ctx.strokeStyle = "black";
-      for (let i = 0; i < this.width + 1; i++) {
+      for (let i = 0; i < this.width; i++) {
         ctx.beginPath();
         ctx.moveTo(i * this.blockSize, 0);
         ctx.lineTo(i * this.blockSize, this.height * this.blockSize);
         ctx.stroke();
       }
 
-      for (let i = 0; i < this.height + 1; i++) {
+      for (let i = 0; i < this.height; i++) {
         ctx.beginPath();
         ctx.moveTo(0, i * this.blockSize);
         ctx.lineTo(this.width * this.blockSize, i * this.blockSize);
@@ -107,6 +110,26 @@ class Level {
     }
   }
 
+  drawNumbers() {
+    ctx.fillStyle = "black";
+    ctx.font = `bold ${this.blockSize}px serif bold`;
+    for (let r = 0; r < this.height; r++) {
+      ctx.fillText(
+        `${r}`,
+        this.width * this.blockSize + this.blockSize / 4,
+        (r + 0.5) * this.blockSize + this.blockSize / 4,
+      );
+    }
+
+    for (let c = 0; c < this.width; c++) {
+      ctx.fillText(
+        `${c}`,
+        (c + 0.3) * this.blockSize,
+        (this.height + 0.5) * this.blockSize,
+      );
+    }
+  }
+
   updateBlock() {
     let xBlock = Math.floor(mouse.x / this.blockSize);
     let yBlock = Math.floor(mouse.y / this.blockSize);
@@ -131,15 +154,15 @@ class Level {
 
 const level = new Level(16, 16, 10);
 
-canvas.width = 16 * 10;
-canvas.height = 16 * 10;
+canvas.width = 17 * 10;
+canvas.height = 17 * 10;
 
 const widthBlockEle = document.getElementById("width") as HTMLInputElement;
 widthBlockEle.value = "" + level.width;
 widthBlockEle.addEventListener("change", () => {
   level.width = +widthBlockEle.value;
-  canvas.width = level.width * level.blockSize;
-  canvas.height = level.height * level.blockSize;
+  canvas.width = (level.width + 1) * level.blockSize;
+  canvas.height = (level.height + 1) * level.blockSize;
   level.level = level.makeLevel();
 });
 
@@ -148,8 +171,8 @@ heightBlockEle.value = "" + level.height;
 heightBlockEle.addEventListener("change", () => {
   level.height = +heightBlockEle.value;
 
-  canvas.width = level.width * level.blockSize;
-  canvas.height = level.height * level.blockSize;
+  canvas.width = (level.width + 1) * level.blockSize;
+  canvas.height = (level.height + 1) * level.blockSize;
   level.level = level.makeLevel();
 });
 
@@ -157,8 +180,8 @@ const blockSizeEle = document.getElementById("size") as HTMLInputElement;
 blockSizeEle.value = "" + level.blockSize;
 blockSizeEle.addEventListener("change", () => {
   level.blockSize = +blockSizeEle.value;
-  canvas.width = level.width * level.blockSize;
-  canvas.height = level.height * level.blockSize;
+  canvas.width = (level.width + 1) * level.blockSize;
+  canvas.height = (level.height + 1) * level.blockSize;
 });
 
 document.getElementById("grid")!.onclick = function () {
@@ -226,7 +249,7 @@ window.addEventListener("mousedown", function (event) {
   mouse.pressed = true;
 });
 
-window.addEventListener("mouseup", function (event) {
+window.addEventListener("mouseup", function () {
   mouse.pressed = false;
 });
 
@@ -289,6 +312,7 @@ function main() {
   level.updateBlock();
   level.draw();
   level.drawGrid();
+  level.drawNumbers();
 }
 
 main();
